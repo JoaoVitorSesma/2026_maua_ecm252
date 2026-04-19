@@ -1,109 +1,91 @@
-import React from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import React, { useState } from 'react'
 
 const App = () => {
-  // window.navigator.geolocation.getCurrentPosition(
-  //   (position) => {
-  //     console.log('Latitude:', position.coords.latitude)
-  //     console.log('Longitude:', position.coords.longitude)
-  //   },
-  //   (error) => {
-  //     console.error('Error obtaining geolocation:', error)
-  //   }
-  // )
+  const [latitude, setLatitude] = useState(null)
+  const [longitude, setLongitude] = useState(null)
+  const [estacao, setEstacao] = useState(null)
+  const [data, setData] = useState(null)
+  const [icone, setIcone] = useState(null)
+  const [mensagemDeErro, setMensagemDeErro] = useState(null)
 
-  // constructor(props) {
-  //   super(props)
-  //   this.state = {
-  //     latitude: null,
-  //     longitude: null,
-  //     estacao: null,
-  //     data: null,
-  //     icone: null
-  //   }
-  // }
+  const obterEstacao = (dataAtual, latitudeAtual) => {
+    const d1 = new Date(dataAtual.getFullYear(), 5, 21)
+    const d2 = new Date(dataAtual.getFullYear(), 8, 24)
+    const d3 = new Date(dataAtual.getFullYear(), 11, 22)
+    const d4 = new Date(dataAtual.getFullYear(), 2, 21)
+    const estaNoSul = latitudeAtual < 0
 
-  const [latitude, setLatitude] = React.useState(null)
-  const [longitude, setLongitude] = React.useState(null)
-  const [estacao, setEstacao] = React.useState(null)
-  const [data, setData] = React.useState(null)
-  const [icone, setIcone] = React.useState(null)
+    if (dataAtual >= d1 && dataAtual < d2) {
+      return estaNoSul ? 'Inverno' : 'Verão'
+    }
 
-  const obterEstacao = (dataAtual, latitude) => {
-    const anoAtual = dataAtual.getFullYear()
-    //new Date(ano, mês(0 a 11), dia(1 a 31))
-    //21/06
-    const d1 = new Date(anoAtual, 5, 23)
-    //24/09
-    const d2 = new Date(anoAtual, 8, 24)
-    //22/12
-    const d3 = new Date(anoAtual, 11, 22)
-    //21/03
-    const d4 = new Date(anoAtual, 2, 21)
-    const sul = latitude < 0;
+    if (dataAtual >= d2 && dataAtual < d3) {
+      return estaNoSul ? 'Primavera' : 'Outono'
+    }
 
-    if (dataAtual >= d1 && dataAtual < d2)
-      return sul ? 'Inverno' : 'Verão'
-    if (dataAtual >= d2 && dataAtual < d3)
-      return sul ? 'Primavera' : 'Outono'
-    if (dataAtual >= d3 || dataAtual < d1)
-      return sul ? 'Verão' : 'Inverno'
-    return sul ? 'Outono' : 'Primavera'
+    if (dataAtual >= d3 || dataAtual < d4) {
+      return estaNoSul ? 'Verão' : 'Inverno'
+    }
+
+    return estaNoSul ? 'Outono' : 'Primavera'
   }
 
   const icones = {
-    'Primavera': '🌸',
-    'Verão': '☀️',
-    'Outono': '🍂',
-    'Inverno': '❄️'
+    Primavera: 'leaf',
+    Verão: 'sun',
+    Outono: 'leaf',
+    Inverno: 'snowflake',
   }
 
   const obterLocalizacao = () => {
     window.navigator.geolocation.getCurrentPosition(
-      (posicao) => {
+      (position) => {
         const dataAtual = new Date()
-        const estacaoAtual = obterEstacao(dataAtual, posicao.coords.latitude)
+        const estacaoAtual = obterEstacao(dataAtual, position.coords.latitude)
         const iconeAtual = icones[estacaoAtual]
-        console.log(iconeAtual)
-        setLatitude(posicao.coords.latitude)
-        setLongitude(posicao.coords.longitude)
+
+        setLatitude(position.coords.latitude)
+        setLongitude(position.coords.longitude)
         setEstacao(estacaoAtual)
         setData(dataAtual.toLocaleTimeString())
         setIcone(iconeAtual)
-      }
+        setMensagemDeErro(null)
+      },
+      (erro) => {
+        setMensagemDeErro('É preciso liberar o acesso à localização para ver a sua estação.')
+        console.log(`Erro: ${erro.toString()}`)
+      },
     )
   }
 
   return (
-    // responsividade, margem acima
     <div className="container mt-2">
-      {/* uma linha, conteúdo centralizado, display é flex */}
       <div className="row justify-content-center">
-      {/* oito colunas das doze disponíveis serão usadas para telas médias em diante */}
-        <div className="col-md-8">
-          {/* um cartão de Bootstrap*/}
+        <div className="col-12">
           <div className="card">
-            {/* o corpo do cartão */}
             <div className="card-body">
-              {/* centraliza verticalmente, margem abaixo */}
-              <div className="d-flex align-items-center border rounded mb-2" style={{ height: '6rem' }}>
-                {/* ícone obtido do estado do componente */}
-                <div style={{ fontSize: '4rem' }}>{icone}</div>
-                {/* largura 75%, margem no à esquerda (start), fs aumenta a fonte */}
+              <div
+                style={{ height: '6rem' }}
+                className="d-flex align-items-center border rounded mb-2"
+              >
+                <i className={`fa-solid fa-5x fa-${icone}`}></i>
                 <p className="w-75 ms-3 text-center fs-1">{estacao}</p>
               </div>
-              <p className="text-center">
-                {/* renderização condicional */}
-                {
-                  latitude ?
-                  `Coordenadas: ${latitude?.toFixed(4)}, ${longitude?.toFixed(4)}. Data: ${data}`:
-                  'Clique no botão para saber a sua estação climática'
-                }
-              </p>
 
-              {/* botão azul (outline, 100% de largura e margem acima) */}
-              <button onClick={obterLocalizacao}
-                className="btn btn-outline-primary w-100 mt-2">
+              <div>
+                <p className="text-center">
+                  {latitude
+                    ? `Coordenadas: ${latitude}, ${longitude}. Data: ${data}`
+                    : mensagemDeErro
+                      ? mensagemDeErro
+                      : 'Clique no botão para saber a sua estação climática'}
+                </p>
+              </div>
+
+              <button
+                onClick={obterLocalizacao}
+                className="btn btn-outline-primary w-100 mt-2"
+              >
                 Qual a minha estação?
               </button>
             </div>

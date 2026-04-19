@@ -1,123 +1,75 @@
-import Pedido from "./pedido"
+import Pedido from './Pedido'
+import Cartao from './Cartao'
+import Feedback from './Feedback'
 
 export default () => {
-  return(
+  const textoOK = 'Já recebi'
+  const textoNOK = 'Ainda não recebi'
+  const funcaoOK = () => alert('Agradecemos o feedback')
+  const funcaoNOK = () => alert('Verificaremos')
+
+  const componenteFeedback = (
+    <Feedback
+      funcaoOK={funcaoOK}
+      funcaoNOK={funcaoNOK}
+      textoOK={textoOK}
+      textoNOK={textoNOK}
+    />
+  )
+
+  return (
     <div className="container border">
-
       <div className="row">
-        <div className="col-12">      
-          <i className="fa-solid fa-otter fa-2x"></i>
+        <div className="col-12">
+          <i className="fa-solid fa-hippo fa-3x"></i>
         </div>
       </div>
 
       <div className="row">
-
-        {/* Gato */}
         <div className="col-sm-12 col-md-6 col-xl-3">
-          {/* <div className="card">
-            <div className="card-header text-muted">11/03/2025</div>
-
-            <div className="card-body d-flex align-items-center gap-3">
-              <i className="fa-solid fa-cat fa-2x"></i>
-
-              <div className="border flex-grow-1 rounded p-3">
-                <h4 className="text-center">Gato</h4>
-                <p className="text-center">Um gatinho</p>
-              </div>
-            </div>
-          </div> */}
-          <Pedido 
-            data = "11/03/2025"
-            icone = "fa-solid fa-cat fa-2x"
-            titulo = "Gato"
-            descricao = "Um gatinho"
+          <Cartao cabecalho="22/02/2026">
+            <Pedido
+              icone="camera"
+              titulo="Câmera"
+              descricao="Uma câmera 4K"
             />
+            {componenteFeedback}
+          </Cartao>
         </div>
 
-        {/* Cachorro */}
         <div className="col-sm-12 col-md-6 col-xl-3">
-          {/* <div className="card">
-            <div className="card-header text-muted">07/07/2025</div>
-
-            <div className="card-body d-flex align-items-center gap-3">
-              <i className="fa-solid fa-dog fa-2x"></i>
-
-              <div className="border flex-grow-1 rounded p-3">
-                <h4 className="text-center">Cachorro</h4>
-                <p className="text-center">Um cachorrinho</p>
-              </div>
-            </div>
-          </div> */}
-          <Pedido 
-            data = "07/07/2025"
-            icone = "fa-dog"
-            titulo = "Cachorro"
-            descricao = "Um cachorrinho"
+          <Cartao cabecalho="11/02/2026">
+            <Pedido
+              icone="bicycle"
+              titulo="Bicicleta"
+              descricao="Uma bicicleta 18 marchas"
             />
+            {componenteFeedback}
+          </Cartao>
         </div>
 
-        {/* Peixe */}
         <div className="col-sm-12 col-md-6 col-xl-3">
-          {/* <div className="card">
-            <div className="card-header text-muted">08/07/2025</div>
-
-            <div className="card-body d-flex align-items-center gap-3">
-              <i className="fa-solid fa-dragon fa-2x"></i>
-
-              <div className="border flex-grow-1 rounded p-3">
-                <h4 className="text-center">Dragão</h4>
-                <p className="text-center">Uma dragoa</p>
-              </div>
-            </div>
-          </div> */}
-          <Pedido 
-            data = "08/07/2025"
-            icone = "fa-dragon"
-            titulo = "Dragão"
-            descricao = "Uma dragoa"
+          <Cartao cabecalho="24/03/2025">
+            <Pedido
+              icone="hippo"
+              titulo="Hipopótamo"
+              descricao="Um filhote de hipo"
             />
+            {componenteFeedback}
+          </Cartao>
         </div>
 
-        {/* Pássaro */}
         <div className="col-sm-12 col-md-6 col-xl-3">
-          {/* <div className="card">
-            <div className="card-header text-muted">08/09/2025</div>
-
-            <div className="card-body d-flex align-items-center gap-3">
-              <i className="fa-solid fa-dove fa-2x"></i>
-
-              <div className="border flex-grow-1 rounded p-3">
-                <h4 className="text-center">Pássaro</h4>
-                <p className="text-center">Um passarinho</p>
-              </div>
-            </div>
-          </div> */}
-          <Pedido 
-            data = "08/09/2025"
-            icone = "fa-dove"
-            titulo = "Pássaro"
-            descricao = "Um passarinho"
+          <Cartao cabecalho="15/02/2026">
+            <Pedido
+              icone="book"
+              titulo="Livro"
+              descricao="Concrete Maths"
             />
+            {componenteFeedback}
+          </Cartao>
         </div>
-
-        {/* Cavalo */}
-        {/* <div className="col-sm-12 col-md-6 col-xl-3">
-          <div className="card">
-            <div className="card-header text-muted">14/06/2025</div>
-
-            <div className="card-body d-flex align-items-center gap-3">
-              <i className="fa-solid fa-horse fa-2x"></i>
-
-              <div className="border flex-grow-1 rounded p-3">
-                <h4 className="text-center">Cavalo</h4>
-                <p className="text-center">Um cavalo forte</p>
-              </div>
-            </div>
-          </div>
-        </div> */}
-
       </div>
-
     </div>
   )
 }

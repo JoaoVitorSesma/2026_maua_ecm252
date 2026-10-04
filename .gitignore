@@ -145,3 +145,6 @@ vite.config.ts.timestamp-*
 
 
 .envapostilas/
+
+# Repositórios independentes e ferramentas locais de migração
+/repos/
